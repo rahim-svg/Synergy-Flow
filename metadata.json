@@ -1,0 +1,8 @@
+{
+  "name": "Synergy Flow",
+  "description": "Enterprise AI-driven fuel logistics platform for real-time fleet optimization and supply chain management.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
