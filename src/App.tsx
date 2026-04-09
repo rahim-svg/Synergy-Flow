@@ -22,6 +22,7 @@ import { UserManagement } from '@/pages/admin/UserManagement';
 // Dispatcher Pages
 import { DispatcherMap } from '@/pages/DispatcherMap';
 import { TripManagement } from '@/pages/dispatcher/TripManagement';
+import { FleetManagement } from '@/pages/dispatcher/FleetManagement';
 // Driver Pages
 import { DriverDashboard } from '@/pages/DriverDashboard';
 // Placeholders for new pages until they are created
@@ -103,6 +104,7 @@ export default function App() {
                 {/* Dispatcher Routes */}
                 <Route path="/dispatcher/map" element={<DispatcherMap />} />
                 <Route path="/dispatcher/trips" element={<TripManagement />} />
+                <Route path="/dispatcher/fleet" element={<FleetManagement />} />
 
                 {/* Driver Routes */}
                 <Route path="/driver/dashboard" element={<DriverDashboard />} />

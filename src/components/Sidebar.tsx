@@ -20,8 +20,9 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 export function Sidebar() {
-  const { role, user, switchUser, users } = useApp();
+  const { role, user, switchUser, users, aiRecommendations } = useApp();
   const location = useLocation();
+  const pendingCount = aiRecommendations.filter(r => r.status === 'PENDING').length;
 
   // Define nav links per role
   const roleMenus = {
@@ -33,13 +34,14 @@ export function Sidebar() {
     ],
     ADMIN: [
       { label: 'Company Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
-      { label: 'Approval Panel', path: '/admin/approvals', icon: CheckSquare, badge: 2 },
-      { label: 'Fleet & Analytics', path: '/admin/inbox', icon: Inbox },
+      { label: 'Approval Panel', path: '/admin/approvals', icon: CheckSquare, badge: pendingCount },
+      { label: 'AI Inbox', path: '/admin/inbox', icon: Inbox },
       { label: 'User Management', path: '/admin/users', icon: Users },
     ],
     DISPATCHER: [
       { label: 'Live Dispatch Map', path: '/dispatcher/map', icon: MapIcon },
       { label: 'Trip Management', path: '/dispatcher/trips', icon: Truck },
+      { label: 'Fleet Management', path: '/dispatcher/fleet', icon: Users },
     ],
     DRIVER: [
       { label: 'My Dashboard', path: '/driver/dashboard', icon: Truck },

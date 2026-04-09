@@ -33,55 +33,40 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
-// Mock AI Recommendations
-const RECOMMENDATIONS = [
-  {
-    id: 'REC-001',
-    type: 'BULK_BUY',
-    title: 'Strategic Bulk Purchase Opportunity',
-    description: 'Regional fuel prices in Houston are projected to rise by 8% in the next 48 hours due to supply chain disruptions.',
-    rationale: 'AI analysis of market trends and weather patterns suggests a temporary bottleneck. Buying 500,000L now will save approximately $42,000.',
-    savings: '$42,500',
-    impact: 'HIGH',
-    time: '10m ago'
-  },
-  {
-    id: 'REC-002',
-    type: 'ROUTE_OPTIMIZATION',
-    title: 'Route Re-routing: Austin Deliveries',
-    description: 'Current traffic patterns on I-35 are causing 45-minute delays for 3 active trips.',
-    rationale: 'Switching to Highway 130 (Toll) will reduce total fleet transit time by 120 minutes and save $1,200 in fuel/idle costs.',
-    savings: '$1,200',
-    impact: 'MEDIUM',
-    time: '25m ago'
-  },
-  {
-    id: 'REC-003',
-    type: 'FLEET_REALLOCATION',
-    title: 'Dynamic Asset Reallocation',
-    description: 'Surge in demand detected in San Antonio station #12.',
-    rationale: 'Reallocating 2 available trucks from Dallas will meet the 15% demand spike with minimal impact on Dallas operations.',
-    savings: '15% Efficiency Gain',
-    impact: 'LOW',
-    time: '1h ago'
-  }
-];
+
+
+import { useApp } from '@/App';
 
 export function AdminInbox() {
+  const { aiRecommendations, setAiRecommendations } = useApp();
+
+  const RECOMMENDATIONS = aiRecommendations.map(r => ({
+    id: r.id,
+    type: r.type,
+    title: r.title,
+    description: r.description,
+    rationale: r.rationale,
+    savings: r.savings,
+    impact: r.impact,
+    time: 'Just now'
+  }));
+
   const [selectedRec, setSelectedRec] = useState<typeof RECOMMENDATIONS[0] | null>(null);
   const [overrideReason, setOverrideReason] = useState('');
   const [isOverrideDialogOpen, setIsOverrideDialogOpen] = useState(false);
 
   const handleApprove = (id: string) => {
-    // Logic for approval
-    console.log('Approved:', id);
+    setAiRecommendations(prev => prev.filter(r => r.id !== id));
+    if (selectedRec?.id === id) setSelectedRec(null);
   };
 
   const handleOverride = () => {
-    // Logic for override with reason
-    console.log('Overridden:', selectedRec?.id, 'Reason:', overrideReason);
+    if (selectedRec) {
+        setAiRecommendations(prev => prev.filter(r => r.id !== selectedRec.id));
+    }
     setIsOverrideDialogOpen(false);
     setOverrideReason('');
+    setSelectedRec(null);
   };
 
   return (
@@ -92,7 +77,7 @@ export function AdminInbox() {
           <p className="text-slate-500 text-sm">Review and authorize AI-generated operational optimizations.</p>
         </div>
         <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 p-1 rounded-lg border border-slate-200 dark:border-zinc-800 shadow-sm">
-          <Button variant="ghost" size="sm" className="text-xs font-bold h-8">Pending (3)</Button>
+          <Button variant="ghost" size="sm" className="text-xs font-bold h-8">Pending ({RECOMMENDATIONS.length})</Button>
           <Button variant="ghost" size="sm" className="text-xs font-bold h-8 text-slate-500">History</Button>
         </div>
       </div>
